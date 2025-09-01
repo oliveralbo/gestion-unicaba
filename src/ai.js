@@ -2,7 +2,9 @@ const axios = require("axios");
 const { format } = require("date-fns");
 const { es } = require("date-fns/locale");
 const { getPrompt } = require("./prompts");
-const assistantConfig = require("./config/assistant");
+// Configuración centralizada del asistente
+const assistant = require("./config/assistant");
+const config = assistant.getConfig();
 
 // Configuración de la API de OpenRouter
 const OR_API_KEY = process.env.OR_API_KEY;
@@ -30,14 +32,14 @@ function formatMessage(role, content) {
  * @returns {boolean} true si está en horario laboral
  */
 function isWorkingHours() {
-  if (!assistantConfig.horario.activo) return true;
+  if (!config.horario.activo) return true;
 
   try {
     const now = new Date();
-    const [startHour, startMinute] = assistantConfig.horario.inicio
+    const [startHour, startMinute] = config.horario.inicio
       .split(":")
       .map(Number);
-    const [endHour, endMinute] = assistantConfig.horario.fin
+    const [endHour, endMinute] = config.horario.fin
       .split(":")
       .map(Number);
 
@@ -64,33 +66,37 @@ function isWorkingHours() {
  * @returns {Promise<string>} Respuesta de la IA
  */
 async function getAIResponse(message, context) {
-  const { contacto, asistente, duenio } = context;
+  const { contacto, asistente, duenio, fecha } = context;
 
   try {
     // Verificar si está fuera de horario laboral
     if (!isWorkingHours() && !contacto.esGrupo) {
-      return assistantConfig.respuestas.fueraDeHorario;
+      return config.mensajes.fueraDeHorario;
     }
 
     // Obtener el historial de conversación
     const history = conversationHistory.get(contacto.numero) || [];
 
-    // Construir el contexto completo para el prompt
+    // Construir el contexto para el prompt
     const promptContext = {
-      ...contacto,
-      asistente: {
-        ...asistente,
-        // Asegurarse de que la personalidad y la impronta estén definidas
-        personalidad: asistente.personalidad || "asistente_profesional",
-        impronta: asistente.impronta || "profesional",
+      contacto: {
+        nombre: contacto.nombre,
+        esGrupo: contacto.esGrupo,
+        ...(contacto.integrantes && { integrantes: contacto.integrantes.join(', ') })
       },
-      duenio: duenio.nombre || "el usuario",
-      fecha: format(new Date(), "d 'de' MMMM 'de' yyyy", { locale: es }),
-      // Incluir configuración adicional si es necesario
-      ...(context.configuracion && { configuracion: context.configuracion }),
+      asistente: {
+        nombre: asistente.nombre,
+        rol: asistente.rol
+      },
+      duenio: {
+        nombre: duenio.nombre,
+        rol: duenio.rol
+      },
+      fecha,
+      hora: new Date().toLocaleTimeString('es-AR')
     };
 
-    // Obtener el prompt del sistema con el contexto completo
+    // Generar el prompt del sistema usando el contexto
     const systemPrompt = getPrompt("general", promptContext);
 
     // Construir los mensajes para la API
@@ -174,7 +180,7 @@ async function getAIResponse(message, context) {
     }
 
     // Devolver un mensaje de error apropiado
-    return assistantConfig.respuestas.error;
+    return config.mensajes.error;
   }
 }
 
