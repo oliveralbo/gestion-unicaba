@@ -20,7 +20,7 @@ function getPrompt(tipo, contacto) {
     ns: "contexto_actual",
   });
 
-  const personalidad = i18n.t("oli", {
+  const personalidad = i18n.t("asistente", {
     fecha: hoy,
     ns: "contexto_actual",
   });

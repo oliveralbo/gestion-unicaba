@@ -8,7 +8,7 @@ const {
   isNuez,
   isLasTias,
 } = require("../chatRules");
-
+// esta se usa abajo en las reglas
 async function processPrompt(message, prompt, contact, chat, contextLabel) {
   try {
     const aiResponse = await getAIResponse(prompt, contact.name, contextLabel);
