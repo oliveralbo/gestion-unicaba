@@ -1,13 +1,15 @@
 const getAIResponse = require("../ai");
 const botState = require("../botState");
-const {
-  isSecta,
-  isTest,
-  isLuis,
-  isVerdaderosChetos,
-  isNuez,
-  isLasTias,
-} = require("../chatRules");
+const rules = require("../prompts/es/contactRules.json"); // 👈 nueva config por contacto/chat
+
+// const {
+//   isSecta,
+//   isTest,
+//   isLuis,
+//   isVerdaderosChetos,
+//   isNuez,
+//   isLasTias,
+// } = require("../chatRules");
 // esta se usa abajo en las reglas
 async function processPrompt(message, prompt, contact, chat, contextLabel) {
   try {
@@ -36,21 +38,42 @@ async function processMessage(message) {
     return;
   }
 
-  // desde aca las diferentes reglas.
-  if (isTest(contact)) {
-    await processPrompt(message, prompt, contact, chat, "luis");
-    return;
-  }
 
-  if (isNuez(chat)) {
-    await processPrompt(message, prompt, contact, chat, "nuez");
-    return;
-  }
-  console.log(isLasTias(chat));
-  if (isLasTias(chat)) {
-    await processPrompt(message, prompt, contact, chat, "tias");
-    return;
-  }
+
+
+
+   // 🔍 buscar regla por nombre de contacto o chat
+   const rule =
+   rules[contact.name] ||
+   rules[chat.name] ||
+   rules[contact.number]; // fallback por número de teléfono
+
+ if (rule?.enabled) {
+   console.log(
+     `Aplicando regla para ${contact.name || chat.name}: estilo=${rule.style}`
+   );
+   await processPrompt(message, prompt, contact, chat, rule.style);
+ } else {
+   console.log(
+     `No hay regla activa para ${contact.name} / ${chat.name}. Ignorando.`
+   );
+ }
+
+  // // desde aca las diferentes reglas.
+  // if (isTest(contact)) {
+  //   await processPrompt(message, prompt, contact, chat, "luis");
+  //   return;
+  // }
+
+  // if (isNuez(chat)) {
+  //   await processPrompt(message, prompt, contact, chat, "nuez");
+  //   return;
+  // }
+  // console.log(isLasTias(chat));
+  // if (isLasTias(chat)) {
+  //   await processPrompt(message, prompt, contact, chat, "tias");
+  //   return;
+  // }
 
   // if (isSecta(chat, contact)) {
   //   await processPrompt(message, prompt, contact, chat, "la_secta");

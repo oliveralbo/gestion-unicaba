@@ -1,3 +1,8 @@
+// ESTE FILE NO SE USA MAS
+
+
+
+
 const isSecta = (chat, contact) => {
   // return chat.name?.startsWith("La Secta");
   chat.name?.startsWith("La Secta") &&

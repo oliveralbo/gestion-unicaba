@@ -11,6 +11,7 @@ function isValidContactName(contactName) {
 
 async function getAIResponse(prompt, contacto, tipo = "no_agendado") {
   const promptConContexto = getPrompt(tipo, contacto);
+  console.log("promptConContexto: ", promptConContexto);
   const history = isValidContactName(contacto)
     ? memory.getHistory(contacto)
     : [];
@@ -25,7 +26,7 @@ async function getAIResponse(prompt, contacto, tipo = "no_agendado") {
     const res = await axios.post(
       OR_URL,
       {
-        model: "deepseek/deepseek-chat-v3-0324:free",
+        model: "deepseek/deepseek-chat-v3.1:free",
         messages,
         temperature: 0.5,
         max_tokens: 200,

@@ -12,16 +12,18 @@ const hoy = new Date().toLocaleDateString("es-AR", {
 function getPrompt(tipo, contacto) {
   const promptBase = i18n.t(tipo, {
     contacto,
-    ns: "prompts",
+    ns: "personalidades",
   });
 
   const contexto = i18n.t("contexto_actual", {
     fecha: hoy,
+    usuario: "Oliverio",
     ns: "contexto_actual",
   });
 
   const personalidad = i18n.t("asistente", {
     fecha: hoy,
+    usuario: "Oliverio",
     ns: "contexto_actual",
   });
 
