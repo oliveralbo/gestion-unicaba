@@ -1,6 +1,6 @@
 const axios = require("axios");
 const memory = require("./chatMemory");
-const { getPrompt } = require("./prompts");
+const { getPrompt } = require("./finalContextBuilder");
 
 const OR_KEY = process.env.OR_API_KEY;
 const OR_URL = "https://openrouter.ai/api/v1/chat/completions";

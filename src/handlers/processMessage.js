@@ -1,15 +1,7 @@
 const getAIResponse = require("../ai");
 const botState = require("../botState");
-const rules = require("../prompts/es/contactRules.json"); // 👈 nueva config por contacto/chat
+const rules = require("../prompts/es/contactRules.json");
 
-// const {
-//   isSecta,
-//   isTest,
-//   isLuis,
-//   isVerdaderosChetos,
-//   isNuez,
-//   isLasTias,
-// } = require("../chatRules");
 // esta se usa abajo en las reglas
 async function processPrompt(message, prompt, contact, chat, contextLabel) {
   try {
@@ -38,15 +30,11 @@ async function processMessage(message) {
     return;
   }
 
-
-
-
-
    // 🔍 buscar regla por nombre de contacto o chat
    const rule =
    rules[contact.name] ||
    rules[chat.name] ||
-   rules[contact.number]; // fallback por número de teléfono
+   rules[contact.number];
 
  if (rule?.enabled) {
    console.log(
@@ -59,44 +47,6 @@ async function processMessage(message) {
    );
  }
 
-  // // desde aca las diferentes reglas.
-  // if (isTest(contact)) {
-  //   await processPrompt(message, prompt, contact, chat, "luis");
-  //   return;
-  // }
-
-  // if (isNuez(chat)) {
-  //   await processPrompt(message, prompt, contact, chat, "nuez");
-  //   return;
-  // }
-  // console.log(isLasTias(chat));
-  // if (isLasTias(chat)) {
-  //   await processPrompt(message, prompt, contact, chat, "tias");
-  //   return;
-  // }
-
-  // if (isSecta(chat, contact)) {
-  //   await processPrompt(message, prompt, contact, chat, "la_secta");
-  //   return;
-  // }
-
-  // if (isVerdaderosChetos(chat, contact)) {
-  //   await processPrompt(
-  //     message,
-  //     prompt,
-  //     contact,
-  //     chat,
-  //     "los_verdaderos_chetos"
-  //   );
-  //   return;
-  // }
-
-  // if (isLuis(chat, contact)) {
-  //   await processPrompt(message, prompt, contact, chat, "luis");
-  //   return;
-  // }
-
-  // si hay más reglas, se agregan abajo en el mismo estilo
 }
 
 module.exports = processMessage;
