@@ -9,7 +9,7 @@ const hoy = new Date().toLocaleDateString("es-AR", {
   day: "numeric",
 });
 
-function getPrompt(tipo, contacto) {
+function getPrompt(tipo, contacto, isGroup) {
   const promptBase = i18n.t(tipo, {
     contacto,
     ns: "personalidades",
@@ -38,11 +38,9 @@ function getPrompt(tipo, contacto) {
     personalidad,
     contexto: temporalContext,
     reglasGrupo: isGroup
-      ? "Responde SOLO si te hacen una pregunta o mencionan 'Oli'."
+      ? "Responde SOLO si te hacen una pregunta o mencionan al usuario"
       : null,
-    autorMensaje,
-    mensaje,
-    instruccion: "Usa estos datos como contexto. Responde SOLO al campo 'mensaje'. No inventes claves nuevas."
+    instruccion: "Usa estos datos como contexto. Responde al usuario de forma directa y concisa. No inventes claves nuevas."
   };
 
   return JSON.stringify(structuredPrompt, null, 2);
