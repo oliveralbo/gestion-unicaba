@@ -5,7 +5,7 @@ const rules = require("../prompts/es/contactRules.json");
 // esta se usa abajo en las reglas
 async function processPrompt(message, prompt, contact, chat, tipo, isGroup) {
   try {
-    const aiResponse = await getAIResponse(prompt, contact.name, tipo, isGroup);
+    const aiResponse = await getAIResponse(prompt, contact, tipo, isGroup);
     await chat.sendMessage(aiResponse);
   } catch (err) {
     console.error(`Error al responder (${tipo}):`, err);

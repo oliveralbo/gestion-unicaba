@@ -10,10 +10,11 @@ function isValidContactName(contactName) {
 }
 
 async function getAIResponse(prompt, contacto, tipo = "no_agendado", isGroup = false) {
+  const contactId = contacto.name || contacto.number;
   const promptConContexto = getPrompt(tipo, contacto, isGroup);
   console.log("promptConContexto: ", promptConContexto);
-  const history = isValidContactName(contacto)
-    ? memory.getHistory(contacto)
+  const history = isValidContactName(contactId)
+    ? memory.getHistory(contactId)
     : [];
 
   const messages = [
@@ -42,8 +43,8 @@ async function getAIResponse(prompt, contacto, tipo = "no_agendado", isGroup = f
 
     const respuesta = res.data.choices[0].message.content.trim();
 
-    memory.addMessage(contacto, "user", prompt);
-    memory.addMessage(contacto, "assistant", respuesta);
+    memory.addMessage(contactId, "user", prompt);
+    memory.addMessage(contactId, "assistant", respuesta);
 
     return respuesta;
   } catch (err) {
