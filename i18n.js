@@ -5,8 +5,8 @@ const path = require("path");
 i18next.use(Backend).init({
   initImmediate: false, // importante si lo usás en un entorno síncrono
   lng: "es", // idioma por defecto
-  ns: ["contexto_actual", "prompts"],
-  defaultNS: "prompts",
+  ns: ["contexto_actual", "personalidades",],
+  defaultNS: "personalidades",
   fallbackLng: "en",
   backend: {
     loadPath: path.join(__dirname, "/src/prompts/{{lng}}/{{ns}}.json"),

@@ -1,0 +1,23 @@
+{
+    "Luis Petrecca": {
+      "enabled": false,
+      "style": "profesional",
+      "isGroup": false
+    },
+    "Las tias!": {
+      "enabled": false,
+      "style": "jodon",
+      "isGroup": false
+    },
+    "Nuez IA Hackathon 7 de Junio": {
+      "enabled": false,
+      "style": "cauto",
+      "isGroup": true
+    },
+    "14155238886": {
+      "enabled": true,
+      "style": "test",
+      "isGroup": false
+    }
+  }
+  

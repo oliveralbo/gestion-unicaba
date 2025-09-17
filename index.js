@@ -18,14 +18,14 @@ client.on("ready", () => {
   console.log("✅ Asistente de IA corriendo correctamente.");
 });
 
-client.on("message_create", async (message) => {
-  //para enviar mis mensajes y controlar la app
-  await handleControlCommands(message);
+client.on("message_create", async (personalMessage) => {
+  //recibo mi mensaje personal para controlar el bot
+  await handleControlCommands(personalMessage);
   return;
 });
 
-client.on("message", async (message) => {
-  await processMessage(message);
+client.on("message", async (chatMessage) => {
+  await processMessage(chatMessage);
 });
 
 client.initialize();
