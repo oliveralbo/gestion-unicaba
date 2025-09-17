@@ -15,7 +15,7 @@ function getPrompt(tipo, contacto) {
     ns: "personalidades",
   });
 
-  const contexto = i18n.t("contexto_actual", {
+  const temporalContext = i18n.t("contexto_actual", {
     fecha: hoy,
     usuario: "Oliverio",
     ns: "contexto_actual",
@@ -27,12 +27,32 @@ function getPrompt(tipo, contacto) {
     ns: "contexto_actual",
   });
 
-  const promptFinal =
-    contexto && personalidad
-      ? `Personalidad:${personalidad},\n\n ${promptBase}\n\nContexto actual:\n${contexto}`
-      : promptBase;
 
-  return promptFinal;
+
+  const structuredPrompt = {
+    usuario: "Oliverio",
+    fecha: hoy,
+    isGroup,
+    promptBase,
+    contacto: contacto?.name || contacto?.number || "desconocido",
+    personalidad,
+    contexto: temporalContext,
+    reglasGrupo: isGroup
+      ? "Responde SOLO si te hacen una pregunta o mencionan 'Oli'."
+      : null,
+    autorMensaje,
+    mensaje,
+    instruccion: "Usa estos datos como contexto. Responde SOLO al campo 'mensaje'. No inventes claves nuevas."
+  };
+
+  return JSON.stringify(structuredPrompt, null, 2);
+
+  // const promptFinal =
+  //   contexto && personalidad
+  //     ? `Personalidad:${personalidad},\n\n ${promptBase}\n\nContexto actual:\n${temporalContext}`
+  //     : promptBase;
+
+  // return promptFinal;
 }
 
 module.exports = { getPrompt };

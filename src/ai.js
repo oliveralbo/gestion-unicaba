@@ -9,8 +9,8 @@ function isValidContactName(contactName) {
   return typeof contactName === "string" && contactName.trim().length > 0;
 }
 
-async function getAIResponse(prompt, contacto, tipo = "no_agendado") {
-  const promptConContexto = getPrompt(tipo, contacto);
+async function getAIResponse(prompt, contacto, tipo = "no_agendado", isGroup = false) {
+  const promptConContexto = getPrompt(tipo, contacto, isGroup);
   console.log("promptConContexto: ", promptConContexto);
   const history = isValidContactName(contacto)
     ? memory.getHistory(contacto)

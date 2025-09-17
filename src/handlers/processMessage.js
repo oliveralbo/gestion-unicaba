@@ -3,12 +3,12 @@ const botState = require("../botState");
 const rules = require("../prompts/es/contactRules.json");
 
 // esta se usa abajo en las reglas
-async function processPrompt(message, prompt, contact, chat, contextLabel) {
+async function processPrompt(message, prompt, contact, chat, tipo, isGroup) {
   try {
-    const aiResponse = await getAIResponse(prompt, contact.name, contextLabel);
+    const aiResponse = await getAIResponse(prompt, contact.name, tipo, isGroup);
     await chat.sendMessage(aiResponse);
   } catch (err) {
-    console.error(`Error al responder (${contextLabel}):`, err);
+    console.error(`Error al responder (${tipo}):`, err);
     await message.reply("⚠️ Lo siento, algo falló al consultar la IA.");
   }
 }
@@ -40,7 +40,7 @@ async function processMessage(message) {
    console.log(
      `Aplicando regla para ${contact.name || chat.name}: estilo=${rule.style}`
    );
-   await processPrompt(message, prompt, contact, chat, rule.style);
+   await processPrompt(message, prompt, contact, chat, rule.style, rule.isGroup);
  } else {
    console.log(
      `No hay regla activa para ${contact.name} / ${chat.name}. Ignorando.`
