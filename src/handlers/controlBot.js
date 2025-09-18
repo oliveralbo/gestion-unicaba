@@ -1,20 +1,18 @@
 const botState = require("../botState");
 
-async function handleControlCommands(message) {
-  const { fromMe } = message;
-  const chat = await message.getChat();
-  const chatName = chat.name;
+async function handleControlCommands(message, myJid) {
+  const { fromMe, from } = message;
 
-  if (chatName !== "Archivos personales" || !fromMe) return;
+  if (myJid !== from || !fromMe) return;
 
-  const body = message.body.trim().toLowerCase();
+  const body = message.body.trim()
 
-  if (body === "#boton") {
+  if (body === "#botON") {
     botState.turnOn();
     await message.reply("✅ Bot activado.");
   }
 
-  if (body === "#botoff") {
+  if (body === "#botOFF") {
     botState.turnOff();
     await message.reply("🛑 Bot desactivado.");
   }

@@ -19,8 +19,12 @@ client.on("ready", () => {
 });
 
 client.on("message_create", async (personalMessage) => {
+  const myJid = (client.info && client.info.wid && client.info.wid._serialized)
+  || (client.info && client.info.me && client.info.me._serialized)
+  || null;
+
   //recibo mi mensaje personal para controlar el bot
-  await handleControlCommands(personalMessage);
+  await handleControlCommands(personalMessage, myJid);
   return;
 });
 
