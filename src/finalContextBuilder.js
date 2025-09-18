@@ -11,7 +11,7 @@ const hoy = new Date().toLocaleDateString("es-AR", {
 
 function getPrompt(tipo, contacto, isGroup) {
   const promptBase = i18n.t(tipo, {
-    contacto,
+    contacto: contacto?.name ?? contacto?.number,
     ns: "personalidades",
   });
 
@@ -44,13 +44,6 @@ function getPrompt(tipo, contacto, isGroup) {
   };
 
   return JSON.stringify(structuredPrompt, null, 2);
-
-  // const promptFinal =
-  //   contexto && personalidad
-  //     ? `Personalidad:${personalidad},\n\n ${promptBase}\n\nContexto actual:\n${temporalContext}`
-  //     : promptBase;
-
-  // return promptFinal;
 }
 
 module.exports = { getPrompt };
