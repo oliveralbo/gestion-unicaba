@@ -31,7 +31,7 @@ git clone https://github.com/oliveralbo/gestion-unicaba
 Luego, navega al directorio que se acaba de crear:
 
 ```bash
-cd whatsapp-ia-bot
+cd gestion-unicaba
 ```
 
 ### Paso 2: Instalar las Dependencias
