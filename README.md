@@ -1,83 +1,134 @@
-# Asistente WhatsApp IA
+<p align="center">
+  <img src="./assets/logo.jpeg" alt="GestiON Logo" width="300"/>
+</p>
 
-Bot de WhatsApp con integración de IA, prompts personalizados y reglas escalables. Ideal para automatizar respuestas y personalizar la experiencia según el contacto o grupo.
+# GestiON - Asistente Personal para WhatsApp
 
-## Requisitos
+**GestiON** es un asistente personal para WhatsApp diseñado para ahorrarte tiempo y ayudarte a gestionar tus conversaciones. Utiliza inteligencia artificial a través de [OpenRouter](https://openrouter.ai/) para generar respuestas automáticas, actuando como tu propio secretario/a personal.
 
-- Node.js >= 16
-- Una cuenta de WhatsApp
-- Clave de API de [OpenRouter](https://openrouter.ai/)
+El producto puede ser utilizado tanto para fines personales (B2C) como profesionales (B2B).
 
-## Instalación
+## Requisitos Previos
 
-1. **Clona el repositorio:**
+Antes de comenzar, asegúrate de tener instalado lo siguiente en tu computadora:
 
-   ```bash
-   git clone <url-del-repo>
-   cd asistente-whatsapp
-   ```
+1.  **Git**: Un sistema para descargar (clonar) el código del proyecto desde su repositorio. Puedes descargarlo desde [git-scm.com](https://git-scm.com/).
+2.  **Node.js**: El entorno que permite ejecutar el bot. Al instalar Node.js, también se instala `npm`, el gestor de paquetes que usaremos para las dependencias.
+    -   Puedes descargarlo desde [nodejs.org](https://nodejs.org/). Se recomienda la versión LTS.
 
-2. **Instala las dependencias:**
+## Guía de Instalación y Puesta en Marcha
 
-   ```bash
-   npm install
-   ```
+A continuación, se detallan los pasos para poner en funcionamiento el bot en tu propia computadora.
 
-3. **Configura las variables de entorno:**
+### Paso 1: Clonar el Proyecto
 
-   - Copia el archivo de ejemplo y edítalo:
-     ```bash
-     cp .env.example .env
-     ```
-   - Abre `.env` y coloca tu clave de OpenRouter:
-     ```env
-     OR_API_KEY=tu_clave_de_openrouter
-     ```
+Primero, abre una terminal o línea de comandos y clona el repositorio del proyecto con el siguiente comando:
 
-4. **Inicia el bot:**
+```bash
+git clone https://github.com/oliveralbo/gestion-unicaba
+```
 
-   ```bash
-   npm run dev
-   ```
+Luego, navega al directorio que se acaba de crear:
 
-   Escanea el QR que aparece en consola con WhatsApp Web.
+```bash
+cd whatsapp-ia-bot
+```
 
-## Uso básico
+### Paso 2: Instalar las Dependencias
 
-- El bot responde automáticamente según reglas y prompts definidos.
-- Para activar/desactivar el bot desde WhatsApp, envía estos comandos **desde tu chat personal llamado "Archivos personales"**:
-  - `#boton` — Activa el bot
-  - `#botoff` — Desactiva el bot
+Dentro del directorio del proyecto, ejecuta el siguiente comando para instalar todos los componentes necesarios para que el bot funcione:
 
-## Personalización y escalabilidad
+```bash
+npm install
+```
 
-### Agregar nuevas reglas de chat
+### Paso 3: Configurar tu Token de OpenRouter
 
-1. Abre `src/chatRules.js`.
-2. Agrega una nueva función que reciba el chat y/o contacto y devuelva `true` si aplica la regla. Ejemplo:
-   ```js
-   const isNuevoGrupo = (chat, contact) =>
-     chat.name === 'Mi Grupo' && contact.name === 'Juan';
-   ```
-3. Exporta la función y agrégala en `src/handlers/processMessage.js` siguiendo el patrón:
-   ```js
-   if (isNuevoGrupo(chat, contact)) {
-     await processPrompt(message, prompt, contact, chat, 'nuevo_grupo');
-     return;
-   }
-   ```
+El bot necesita un "token" o "clave" para poder conectarse al servicio de inteligencia artificial. Sigue estos pasos para obtener el tuyo:
 
-### Agregar nuevos prompts o personalidades
+1.  **Crea una cuenta en OpenRouter**: Ve a [openrouter.ai/keys](https://openrouter.ai/keys) y regístrate.
+2.  **Obtén tu clave (API Key)**: Una vez dentro de tu panel, crea una nueva clave y cópiala. Esta clave es secreta y no debes compartirla.
+3.  **Configura la clave en el proyecto**:
+    -   En el directorio del proyecto, crea una copia del archivo de ejemplo `.env.example` y renómbrala a `.env`.
+    -   Abre el nuevo archivo `.env` con un editor de texto y pega la clave que copiaste, de la siguiente manera:
 
-1. Edita o agrega entradas en `src/prompts/es/prompts.json` para nuevos tipos de prompt.
-2. Si necesitas un nuevo contexto o personalidad, edítalo en `src/prompts/es/contexto_actual.json`.
-3. Usa la clave correspondiente como parámetro en la función `getPrompt`.
+    ```
+    OR_API_KEY=aqui_va_tu_clave_secreta_de_openrouter
+    ```
 
-### Agregar nuevos idiomas
+### Paso 4: Ejecutar el Proyecto
 
-1. Crea una carpeta para el idioma en `src/prompts/` (ej: `en/` para inglés).
-2. Agrega los archivos `prompts.json` y `contexto_actual.json` traducidos.
-3. Configura el idioma en `i18n.js` si lo deseas por defecto.
+Con todo configurado, inicia el bot con el siguiente comando en la terminal:
+
+```bash
+npm run dev
+```
+
+Al ejecutarlo por primera vez, aparecerá un **código QR** en la terminal. Deberás escanearlo con tu teléfono desde la aplicación de WhatsApp, en la sección `Ajustes > Dispositivos vinculados > Vincular un dispositivo`.
+
+Una vez escaneado, el bot se conectará a tu cuenta de WhatsApp y estará listo para funcionar.
+
+### Paso 5: Controlar el Estado del Bot (ON/OFF)
+
+Por defecto, el bot está encendido. Sin embargo, puedes activarlo o desactivarlo en cualquier momento enviando un mensaje desde tu propio número de WhatsApp (es decir, en el chat que tienes contigo mismo).
+
+-   Para **apagar** el bot, envía el mensaje: `#botOFF`
+-   Para **encender** el bot, envía el mensaje: `#botON`
+
+El bot te confirmará el cambio de estado con un mensaje de respuesta.
+
+## Cómo Personalizar tu Asistente
+
+Para que el bot responda de manera auténtica, es fundamental que lo personalices con tu información.
+
+### 1. Cambia tu Nombre de Usuario
+
+El bot se refiere al usuario principal por un nombre. Para cambiarlo:
+
+1.  Abre el archivo `src/finalContextBuilder.js`.
+2.  En las líneas que dicen `usuario: "Oliverio"`, reemplaza `"Oliverio"` por tu nombre.
+
+### 2. Adapta el Contexto del Bot
+
+El "contexto" es la información clave sobre ti que el bot utiliza para responder. Para modificarlo:
+
+1.  Abre el archivo `src/prompts/es/contexto_actual.json`.
+2.  Modifica el texto dentro de `"contexto_actual"`. Aquí debes describir tu profesión, horarios, gustos o cualquier dato que quieras que el bot conozca para responder en tu nombre.
+
+    *   **Importante**: Este es el archivo más importante para la personalidad del bot. Sé tan detallado como desees.
+
+### 3. Define Reglas para tus Contactos
+
+Puedes controlar cómo y a quién responde el bot. Para ello:
+
+1.  Abre el archivo `src/prompts/es/contactRules.json`.
+2.  En este archivo, puedes agregar reglas para contactos o grupos específicos, usando su nombre (tal como aparece en tu agenda) o su número de teléfono.
+
+    -   `"enabled"`: Ponlo en `true` si quieres que el bot responda a ese contacto, o `false` para ignorarlo.
+    -   `"style"`: Define un estilo de respuesta (ej. `"profesional"`, `"amigable"`). Los estilos se configuran en `src/prompts/es/personalidades.json`.
+    -   `"isGroup"`: Ponlo en `true` si es un chat grupal.
+
+**Ejemplo de configuración:**
+
+```json
+{
+  "Nombre de un Amigo": {
+    "enabled": true,
+    "style": "amigable",
+    "isGroup": false
+  },
+  "Grupo del Trabajo": {
+    "enabled": true,
+    "style": "profesional",
+    "isGroup": true
+  },
+  "5491122334455": { // Un número que no tienes agendado
+    "enabled": false, // El bot no le responderá
+    "style": "cauto",
+    "isGroup": false
+  }
+}
+```
 
 ## Estructura del proyecto
 
